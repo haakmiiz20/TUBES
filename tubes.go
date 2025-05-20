@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"runtime"
+)
 
 const NMAX int = 1000
 
@@ -56,25 +61,41 @@ func main() {
 		case 8:
 			cetakriwayat()
 		case 0:
-			fmt.Println("Keluar dari program.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||            Keluar dari program             ||")
+			fmt.Println("||--------------------------------------------||")
 			return
 		default:
-			fmt.Println("Pilihan tidak valid.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||            Pilihan tidak valid             ||")
 		}
 	}
 }
+func ClearScreen() {
+	if runtime.GOOS == "windows" {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	} else {
+		fmt.Print("\033[H\033[2J")
+	}
+}
 func menu(option *int) {
-	fmt.Println("===== Menu =====")
-	fmt.Println("1. Tambah Aset Kripto")
-	fmt.Println("2. Ubah Aset Kripto")
-	fmt.Println("3. Hapus Aset Kripto")
-	fmt.Println("4. Beli Aset Kripto")
-	fmt.Println("5. Jual Aset Kripto")
-	fmt.Println("6. Lihat Daftar Aset")
-	fmt.Println("7. Lihat Saldo")
-	fmt.Println("8. Lihat Riwayat Transaksi")
-	fmt.Println("0. Keluar")
-	fmt.Print("Option: ")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("||------------------- Menu -------------------||")
+	fmt.Println("|| 1. Tambah Aset Kripto                      ||")
+	fmt.Println("|| 2. Ubah Aset Kripto                        ||")
+	fmt.Println("|| 3. Hapus Aset Kripto                       ||")
+	fmt.Println("|| 4. Beli Aset Kripto                        ||")
+	fmt.Println("|| 5. Jual Aset Kripto                        ||")
+	fmt.Println("|| 6. Lihat Daftar Aset                       ||")
+	fmt.Println("|| 7. Lihat Saldo                             ||")
+	fmt.Println("|| 8. Lihat Riwayat Transaksi                 ||")
+	fmt.Println("|| 0. Keluar                                  ||")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("||--------------------------------------------||")
+
+	fmt.Print("|| Option: ")
 	fmt.Scan(option)
 }
 func selectionSort(a *arrKripto, jumlahAset int) {
@@ -104,11 +125,17 @@ func tambahAset(kripto *arrKripto, jumlahAset *int) {
 	var find bool
 	find = false
 
-	fmt.Print("Isi nama, harga dan nilai pasar : ")
-	fmt.Scan(&nama, &harga, &nilai)
+	fmt.Println("||--------------------------------------------||")
+	fmt.Print("|| Isi nama        : ")
+	fmt.Scan(&nama)
+	fmt.Print("|| Isi harga       : ")
+	fmt.Scan(&harga)
+	fmt.Print("|| Isi nilai pasar : ")
+	fmt.Scan(&nilai)
 	for i := 0; i <= *jumlahAset; i++ {
 		if (*kripto)[i].namaAset == nama {
-			fmt.Println("Aset sudah ada, tidak bisa ditambahkan.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||   Aset sudah ada, tidak bisa ditambahkan   ||")
 			find = true
 		}
 	}
@@ -117,7 +144,8 @@ func tambahAset(kripto *arrKripto, jumlahAset *int) {
 		(*kripto)[*jumlahAset].harga = harga
 		(*kripto)[*jumlahAset].nilaiAset = nilai
 		*jumlahAset = *jumlahAset + 1
-		fmt.Println("Aset berhasil ditambahkan.")
+		fmt.Println("||--------------------------------------------||")
+		fmt.Println("||         Aset berhasil ditambahkan.         ||")
 	}
 }
 func ubahAset(kripto *arrKripto, jumlahAset int) {
@@ -128,29 +156,33 @@ func ubahAset(kripto *arrKripto, jumlahAset int) {
 	var find bool
 	find = false
 
-	fmt.Println("Masukkan nama aset yang ingin diubah:")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("|| Masukkan Aset yang Ingin diubah:           ||")
+	fmt.Print("|| Nama Lama : ")
 	fmt.Scan(&nama)
 
 	for i := 0; i < jumlahAset; i++ {
 		if kripto[i].namaAset == nama {
 
-			fmt.Print("Masukkan nama baru:")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Print("|| Masukkan Nama Baru        : ")
 			fmt.Scan(&namaBaru)
-			fmt.Print("Masukkan harga baru:")
+			fmt.Print("|| Masukkan Harga Baru       : ")
 			fmt.Scan(&hargaBaru)
-			fmt.Print("Masukkan nilai pasar baru:")
+			fmt.Print("|| Masukkan Nilai Pasar Baru : ")
 			fmt.Scan(&nilaiBaru)
 
 			kripto[i].namaAset = namaBaru
 			kripto[i].harga = hargaBaru
 			kripto[i].nilaiAset = nilaiBaru
-
-			fmt.Println("Aset berhasil diubah.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||           Aset berhasil diubah             ||")
 			find = true
 		}
 	}
 	if !find {
-		fmt.Println("Aset tidak ditemukan.")
+		fmt.Println("||--------------------------------------------||")
+		fmt.Println("||            Aset tidak ditemukan            ||")
 	}
 }
 func hapusAset(kripto *arrKripto, jumlahAset *int) {
@@ -158,7 +190,8 @@ func hapusAset(kripto *arrKripto, jumlahAset *int) {
 	var nama string
 	var find bool
 
-	fmt.Println("Masukkan nama aset yang ingin dihapus: ")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Print("|| Masukkan Aset yang Ingin dihapus: ")
 	fmt.Scan(&nama)
 
 	for i := 0; i < *jumlahAset; i++ {
@@ -168,7 +201,8 @@ func hapusAset(kripto *arrKripto, jumlahAset *int) {
 				kripto[j] = kripto[j+1]
 			}
 			*jumlahAset -= 1
-			fmt.Println("Aset berhasil dihapus.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||           Aset berhasil dihapus            ||")
 
 		}
 	}
@@ -184,9 +218,11 @@ func beliAset(kripto *arrKripto, jumlahAset int) {
 	find = false
 	jenis = "Beli"
 
-	fmt.Print("Masukkan nama aset yang ingin dibeli : ")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("|| Masukkan Aset yang Ingin dibeli :          ||")
+	fmt.Print("|| Nama Aset : ")
 	fmt.Scan(&namaBeli)
-	fmt.Print("Masukkan jumlah aset yang ingin dibeli : ")
+	fmt.Print("|| Jumlah Aset : ")
 	fmt.Scan(&jumlah)
 
 	for i := 0; i < jumlahAset; i++ {
@@ -195,14 +231,18 @@ func beliAset(kripto *arrKripto, jumlahAset int) {
 			totalHarga = jumlah * kripto[i].harga
 			if saldo >= totalHarga {
 				saldo = saldo - totalHarga
-				fmt.Printf("Berhasil membeli %.2f unit %s dengan total harga %.2f", jumlah, namaBeli, totalHarga)
+				fmt.Println("||--------------------------------------------||")
+				fmt.Printf("|| Berhasil membeli %.0f unit %s   \n", jumlah, namaBeli)
+				fmt.Printf("|| dengan total harga %.0f    \n", totalHarga)
 			} else {
-				fmt.Println("Saldo tidak mencukupi")
+				fmt.Println("||--------------------------------------------||")
+				fmt.Println("||           Saldo tidak mencukupi            ||")
 			}
 		}
 	}
 	if !find {
-		fmt.Println("Aset tidak ditemukan.")
+		fmt.Println("||--------------------------------------------||")
+		fmt.Println("||            Aset tidak ditemukan            ||")
 	}
 	riwayattransaksi(jenis, namaBeli, jumlah, totalHarga)
 }
@@ -213,10 +253,11 @@ func jualAset(kripto *arrKripto, jumlahAset int) {
 	var find bool
 	find = false
 	jenis = "Jual"
-
-	fmt.Print("Masukkan nama aset yang ingin dijual : ")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("|| Masukkan Aset yang Ingin dijual :          ||")
+	fmt.Print("|| Nama Aset : ")
 	fmt.Scan(&namaJual)
-	fmt.Print("Masukkan jumlah aset yang ingin dijual : ")
+	fmt.Print("|| Jumlah aset : ")
 	fmt.Scan(&jumlah)
 
 	for i := 0; i < jumlahAset; i++ {
@@ -224,7 +265,9 @@ func jualAset(kripto *arrKripto, jumlahAset int) {
 			find = true
 			totalHarga = jumlah * kripto[i].harga
 			saldo = saldo + totalHarga
-			fmt.Printf("Berhasil menjual %.2f unit %s dengan total harga %.2f\n", jumlah, namaJual, totalHarga)
+			fmt.Println("||--------------------------------------------||")
+			fmt.Printf("|| Berhasil menjual %.0f unit %s \n", jumlah, namaJual)
+			fmt.Printf("|| dengan total harga %.0f \n", totalHarga)
 		}
 	}
 	if !find {
@@ -235,15 +278,17 @@ func jualAset(kripto *arrKripto, jumlahAset int) {
 func daftarAset(a arrKripto, jumlahAset int) {
 	var i int
 
-	fmt.Println("Daftar aset terurut berdasarkan harga : ")
-	fmt.Printf("%20s %6s %6s\n", "Nama Aset", "Harga", "NilaiAset")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("|| Daftar aset terurut berdasarkan harga :    ||")
+	fmt.Println("|| Nama Aset    Harga    NilaiAset            ||")
 	for i = 0; i < jumlahAset; i++ {
-		fmt.Printf("%14s %12.2f %6.2f\n", a[i].namaAset, a[i].harga, a[i].nilaiAset)
+		fmt.Printf("|| %s %12.0f %8.0f\n", a[i].namaAset, a[i].harga, a[i].nilaiAset)
 	}
 	fmt.Println()
 }
 func tampilSaldo() {
-	fmt.Printf("Saldo saat ini :  %.0f\n", saldo)
+	fmt.Println("||--------------------------------------------||")
+	fmt.Printf("|| Saldo saat ini :  %.0f                     ||\n", saldo)
 }
 func riwayattransaksi(jenis, namaAset string, jumlah, totalHarga float64) {
 	if jumlahTrans < NMAX {
@@ -257,13 +302,15 @@ func riwayattransaksi(jenis, namaAset string, jumlah, totalHarga float64) {
 func cetakriwayat() {
 	var i int
 	if jumlahTrans == 0 {
-		fmt.Print("Tidak ada riwayat\n")
+		fmt.Println("||--------------------------------------------||")
+		fmt.Println("||               Tidak ada riwayat        -   ||")
 		return
 	}
-	fmt.Print("---Riwayat Transaksi---\n")
-	fmt.Printf("%10s %10s %10s %10s\n", "Jenis", "Nama Aset", "Jumlah", "Total Harga")
+	fmt.Println("||----------- Riwayat Transaksi --------------||")
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("|| Jenis    NamaAset     Jumlah    TotalHarga ||")
 	for i = 0; i < jumlahTrans; i++ {
-		fmt.Printf("%10s %10s %6.0f %10.0f\n", riwayat[i].jenis, riwayat[i].namaAset, riwayat[i].jumlah, riwayat[i].totalHarga)
+		fmt.Printf("|| %s %5s %12.0f %9.0f\n", riwayat[i].jenis, riwayat[i].namaAset, riwayat[i].jumlah, riwayat[i].totalHarga)
 
 	}
 
