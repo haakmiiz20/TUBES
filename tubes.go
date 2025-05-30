@@ -81,6 +81,8 @@ func ClearScreen() {
 	}
 }
 func menu(option *int) {
+//{ I.S: variabel optoon belum menerima input angka dari pengguna
+  //F.S: variabel option menerima input angka dari pengguna yang dipilih dari menu}
 	fmt.Println("||--------------------------------------------||")
 	fmt.Println("||------------------- Menu -------------------||")
 	fmt.Println("|| 1. Tambah Aset Kripto                      ||")
@@ -99,6 +101,8 @@ func menu(option *int) {
 	fmt.Scan(option)
 }
 func selectionSort(a *arrKripto, jumlahAset int) {
+//{ I.S: array a berisi data aset kripto yang tidak terurut
+  //F.S: array a terurut menurun (descending) berdasarkan atribut harga}
 	var i, index, pass int
 	var temp asetKripto
 	pass = 1
@@ -117,8 +121,65 @@ func selectionSort(a *arrKripto, jumlahAset int) {
 		pass = pass + 1
 	}
 }
-func tambahAset(kripto *arrKripto, jumlahAset *int) {
+func  insertionSort(a *arrKripto, jumlahAset int) {
+//{ I.S array a berisi data aset kripto dalam urutan tidak tertentu
+//  F.S array a terurut menaik (ascending) berdasarkan atribut harga.}
+	var i, pass int
+	var temp asetKripto
+	
+	pass = 1
+	for pass <= jumlahAset - 1 {
+		i = pass
+		temp.harga = a[pass].harga
+		for i > 0 && temp.harga < a[i-1].harga {
+			a[i].harga = a[i-1].harga
+			i = i - 1
+		}
+		a[i].harga = temp.harga
+		pass = pass + 1
+	}
+}
+func binarySearch(a arrKripto, jumlahAset int, nama string)int {
+//{ I.S array a tidak terurut berdasarkan namaAset, nama adalah input dari pengguna.
+//  F.S array a terurut menaik berdasarkan namaAset, program mencetak informasi aset jika ditemukan, atau pesan tidak ditemukan}
+	var i, pass int
+	var temp asetKripto
+	
+	pass = 1
+	for pass <= jumlahAset - 1 {
+		i = pass
+		temp.namaAset = a[pass].namaAset
+		for i > 0 && temp.namaAset < a[i-1].namaAset {
+			a[i].namaAset = a[i-1].namaAset
+			i = i - 1
+		}
+		a[i].namaAset = temp.namaAset
+		pass = pass + 1
+	}
+	
+	var low, high, mid int
+	low = 0
+	high = jumlahAset - 1
 
+	for low <= high {
+		mid = (low + high) / 2
+		if a[mid].namaAset == nama {
+			fmt.Println("||--------------------------------------------||")
+			fmt.Printf(" Aset ditemukan: %s | Harga: %.0f | Nilai Pasar: %.0f ||\n", a[mid].namaAset, a[mid].harga, a[mid].nilaiAset)
+			return mid
+		} else if a[mid].namaAset < nama {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+	fmt.Println("||--------------------------------------------||")
+	fmt.Println("||         Aset tidak ditemukan               ||")
+	return -1
+}
+func tambahAset(kripto *arrKripto, jumlahAset *int) {
+//{ I.S array kripto berisi sejumlah aset kripto dan jumlahAset menyatakan jumlah aset saat ini.
+  //F.S Jika nama belum ada, data aset baru ditambahkan ke array kripto dan jumlahAset bertambah satu.}
 	var nama string
 	var harga float64
 	var nilai float64
@@ -149,7 +210,8 @@ func tambahAset(kripto *arrKripto, jumlahAset *int) {
 	}
 }
 func ubahAset(kripto *arrKripto, jumlahAset int) {
-
+//{ I.S array kripto berisi aset kripto, dan pengguna memasukkan data aset yang ingin diubah.
+  //F.S Jika ditemukan, data aset tersebut diubah dengan data baru yang dimasukkan pengguna.}
 	var nama, namaBaru string
 	var hargaBaru float64
 	var nilaiBaru float64
@@ -186,7 +248,8 @@ func ubahAset(kripto *arrKripto, jumlahAset int) {
 	}
 }
 func hapusAset(kripto *arrKripto, jumlahAset *int) {
-
+//{ I.S array kripto berisi aset kripto, dan pengguna memasukkan nama aset yang akan dihapus.
+  //F.S Jika ditemukan, aset kripto akan dihapus dari array kripto dan array jumlahAset berkurang.}
 	var nama string
 	var find bool
 
@@ -211,7 +274,8 @@ func hapusAset(kripto *arrKripto, jumlahAset *int) {
 	}
 }
 func beliAset(kripto *arrKripto, jumlahAset int) {
-
+//{ I.S pengguna memasukkan nama aset yang ingin dibeli dan jumlah pembelian. Saldo dan data aset sudah ada.
+  //F.S Jika saldo cukup dan aset ditemukan, saldo berkurang, transaksi dicatat dalam riwayat}
 	var namaBeli, jenis string
 	var jumlah, totalHarga float64
 	var find bool
@@ -247,7 +311,8 @@ func beliAset(kripto *arrKripto, jumlahAset int) {
 	riwayattransaksi(jenis, namaBeli, jumlah, totalHarga)
 }
 func jualAset(kripto *arrKripto, jumlahAset int) {
-
+//{ I.S pengguna memasukkan nama aset yang ingin dijual dan jumlah penjualan.
+  //F.S Jika aset ditemukan, saldo bertambah, transaksi dicatat dalam riwayat}
 	var namaJual, jenis string
 	var jumlah, totalHarga float64
 	var find bool
@@ -276,8 +341,9 @@ func jualAset(kripto *arrKripto, jumlahAset int) {
 	riwayattransaksi(jenis, namaJual, jumlah, totalHarga)
 }
 func daftarAset(a arrKripto, jumlahAset int) {
+//{ I.S Array a berisi data aset.
+  //F.S menampilkan daftar aset yag sudah dibeli dan dijual oleh pengguna.}
 	var i int
-
 	fmt.Println("||--------------------------------------------||")
 	fmt.Println("|| Daftar aset terurut berdasarkan harga :    ||")
 	fmt.Println("|| Nama Aset    Harga    NilaiAset            ||")
@@ -287,10 +353,14 @@ func daftarAset(a arrKripto, jumlahAset int) {
 	fmt.Println()
 }
 func tampilSaldo() {
+//{ I.S saldo sudah dideklrarasikan.
+  //F.S menampilkan nilai saldo saat ini ke layar.}
 	fmt.Println("||--------------------------------------------||")
 	fmt.Printf("|| Saldo saat ini :  %.0f                     ||\n", saldo)
 }
 func riwayattransaksi(jenis, namaAset string, jumlah, totalHarga float64) {
+//{ I.S jumlahTrans berisi jumlah transaksi yang telah dilakukan.
+  //F.S Menambahkan data transaksi baru ke array riwayat, dan jumlahTrans bertambah satu.}
 	if jumlahTrans < NMAX {
 		riwayat[jumlahTrans].jenis = jenis
 		riwayat[jumlahTrans].namaAset = namaAset
@@ -300,6 +370,8 @@ func riwayattransaksi(jenis, namaAset string, jumlah, totalHarga float64) {
 	jumlahTrans = jumlahTrans + 1
 }
 func cetakriwayat() {
+//{ I.S Array riwayat berisi transaksi yang sudah dilakukan (bisa kosong).
+//  F.S Menampilkan semua data transaksi ke layar, atau pesan kosong jika belum ada transaksi.}
 	var i int
 	if jumlahTrans == 0 {
 		fmt.Println("||--------------------------------------------||")
