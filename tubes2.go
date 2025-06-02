@@ -42,7 +42,7 @@ func main() {
 	jumlahAset = 0
 	jumlahTrans = 0
 	akunAktif = nil
-	for akunAktif == nil {
+	for  {
 		var pilih int
 		fmt.Println("||--------------------------------------------||")
 		fmt.Println("||----------------- Menu Awal ----------------||")
@@ -58,7 +58,9 @@ func main() {
 		case 2:
 			register(&daftarAkun, &jumlahAkun)
 		case 0:
-			fmt.Println("Keluar dari program.")
+			fmt.Println("||--------------------------------------------||")
+			fmt.Println("||            Keluar dari program             ||")
+			fmt.Println("||--------------------------------------------||")
 			return
 		default:
 			fmt.Println("Pilihan tidak valid.")
@@ -120,6 +122,8 @@ func menu(option *int) {
 }
 func register(daftarAkun *[akunMax]akun, jumlahAkun *int) {
 	var uname, pass string
+	var temp bool = false
+
 	fmt.Println("||--------------- Register Akun --------------||")
 	fmt.Print("|| Buat Username: ")
 	fmt.Scan(&uname)
@@ -128,18 +132,25 @@ func register(daftarAkun *[akunMax]akun, jumlahAkun *int) {
 
 	for i := 0; i < *jumlahAkun; i++ {
 		if daftarAkun[i].username == uname {
-			fmt.Println("|| Username sudah digunakan.")
-			return
+			temp = true
 		}
 	}
 
-	daftarAkun[*jumlahAkun] = akun{username: uname, password: pass, saldo: 0}
-	*jumlahAkun++
-	fmt.Println("|| Akun berhasil dibuat.")
+	if temp == true {
+		fmt.Println("|| Username sudah digunakan.")
+	} else {
+		daftarAkun[*jumlahAkun] = akun{username: uname, password: pass, saldo: 0}
+		*jumlahAkun++
+		fmt.Println("|| Akun berhasil dibuat.")
+	}
 }
+
 
 func login(daftarAkun *[akunMax]akun, jumlahAkun int) *akun {
 	var uname, pass string
+	var hasil *akun
+	hasil = nil
+
 	fmt.Println("||---------------- Login Akun ----------------||")
 	fmt.Print("|| Username: ")
 	fmt.Scan(&uname)
@@ -148,13 +159,19 @@ func login(daftarAkun *[akunMax]akun, jumlahAkun int) *akun {
 
 	for i := 0; i < jumlahAkun; i++ {
 		if daftarAkun[i].username == uname && daftarAkun[i].password == pass {
-			fmt.Println("|| Login berhasil.")
-			return &daftarAkun[i]
+			hasil = &daftarAkun[i]
 		}
 	}
-	fmt.Println("|| Login gagal. Username atau password salah.")
-	return nil
+
+	if hasil != nil {
+		fmt.Println("|| Login berhasil.")
+	} else {
+		fmt.Println("|| Login gagal. Username atau password salah.")
+	}
+
+	return hasil
 }
+
 func isiSaldo(akunAktif *akun) {
 	var tambah float64
 	fmt.Println("||----------------- Isi Saldo ----------------||")
@@ -319,14 +336,15 @@ func hapusAset(kripto *arrKripto, jumlahAset *int) {
 	//F.S Jika ditemukan, aset kripto akan dihapus dari array kripto dan array jumlahAset berkurang.}
 	var nama string
 	var find bool
+	var i,j int
 
 	fmt.Println("||--------------------------------------------||")
 	fmt.Print("|| Masukkan Aset yang Ingin dihapus: ")
 	fmt.Scan(&nama)
-	for i := 0; i < *jumlahAset; i++ {
+	for i = 0; i < *jumlahAset; i++ {
 		if kripto[i].namaAset == nama {
 			find = true
-			for j := i; j < *jumlahAset-1; j++ {
+			for j = i; j < *jumlahAset-1; j++ {
 				kripto[j] = kripto[j+1]
 			}
 			*jumlahAset -= 1
