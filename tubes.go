@@ -1,11 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"os/exec"
-	"runtime"
-)
+import "fmt"
 
 const NMAX int = 1000
 
@@ -55,7 +50,6 @@ func main() {
 		case 6:
 			selectionSort(&kripto, jumlahAset)
 			daftarAset(kripto, jumlahAset)
-
 		case 7:
 			tampilSaldo()
 		case 8:
@@ -69,15 +63,6 @@ func main() {
 			fmt.Println("||--------------------------------------------||")
 			fmt.Println("||            Pilihan tidak valid             ||")
 		}
-	}
-}
-func ClearScreen() {
-	if runtime.GOOS == "windows" {
-		cmd := exec.Command("cmd", "/c", "cls")
-		cmd.Stdout = os.Stdout
-		cmd.Run()
-	} else {
-		fmt.Print("\033[H\033[2J")
 	}
 }
 func menu(option *int) {
